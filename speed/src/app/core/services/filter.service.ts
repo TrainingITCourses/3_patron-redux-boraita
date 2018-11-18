@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
-import { Launch } from '../store/models/launch';
+import { Launch } from '../../store/models/launch';
 
 @Injectable()
 export class FilterService {
@@ -46,11 +46,5 @@ export class FilterService {
           )
         )
       );
-  }
-
-  getAllLaunches() {
-    return this.http
-      .get('../assets/data/launches.json')
-      .pipe(map(data => data['launches']));
   }
 }

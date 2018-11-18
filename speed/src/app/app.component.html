@@ -6,10 +6,10 @@
     }}</option>
   </select>
   <app-filter-list
-    [filterList]="criteryList | async"
+    [filterList]="criteryList$ | async"
     (fieldSelected)="filterLaunches($event)"
   ></app-filter-list>
 </div>
 <div style="max-width: 78%; float: right; background-color: rgb(241, 241, 241)">
-  <app-launches-list [launchesList]="launchesList | async"></app-launches-list>
+  <app-launches-list [launchesList]="launchesList$ | async"></app-launches-list>
 </div>
