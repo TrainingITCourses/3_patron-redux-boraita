@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
-import { GlobalStore } from '../store/global-store.state';
+import { GlobalStore } from '../store/global/global-store.state';
 import {
   LoadLaunches,
   LoadStatuses,
   LoadAgencies,
   LoadTypes
-} from '../store/global-store.actions';
+} from '../store/global/global-store.actions';
 
 @Injectable()
 export class ApiService {
   constructor(private http: HttpClient, private global: GlobalStore) {}
-
+  key = 'launches';
   getAgencies() {
     return this.http
       .get('../assets/data/agencies.json')
@@ -30,12 +30,24 @@ export class ApiService {
     return this.http
       .get('../assets/data/missiontypes.json')
       .pipe(map(data => data['types']))
-      .subscribe(types => this.global.dispatch(new LoadTypes(types)));
+      .subscribe(types => {
+        this.global.dispatch(new LoadTypes(types));
+      });
   }
   getAllLaunches() {
-    this.http
-      .get('../assets/data/launches.json')
-      .pipe(map(data => data['launches']))
-      .subscribe(launches => this.global.dispatch(new LoadLaunches(launches)));
+    const localLaunches = localStorage.getItem(this.key);
+    if (localLaunches) {
+      this.global.dispatch(new LoadLaunches(JSON.parse(localLaunches)));
+    } else {
+      this.http
+        .get('../assets/data/launches.json')
+        .pipe(map(data => data[this.key]))
+        .subscribe(
+          launches => (
+            localStorage.setItem(this.key, JSON.stringify(launches)),
+            this.global.dispatch(new LoadLaunches(launches))
+          )
+        );
+    }
   }
 }

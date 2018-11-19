@@ -1,10 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { FilterService } from './core/services/filter.service';
 import { ApiService } from './core/services/api.service';
-import { GlobalStore, GlobalSlideTypes } from './core/store/global-store.state';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import {
+  GlobalStore,
+  GlobalSlideTypes
+} from './core/store/global/global-store.state';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -60,27 +63,22 @@ export class AppComponent implements OnInit {
         break;
       case 'type':
         this.criteryList$ = this.global
-        .select$(GlobalSlideTypes.types)
-        .pipe(map(types => types));
+          .select$(GlobalSlideTypes.types)
+          .pipe(map(types => types));
         break;
     }
   }
   filterLaunches(filterSelected) {
+    this.apiService.getAllLaunches();
     switch (this.criterySelected.value) {
       case 'agencies':
-        this.launchesList$ = this.filterService.getFilterAgencies(
-          filterSelected.type
-        );
+        this.filterService.getFilterAgencies(filterSelected.type);
         break;
       case 'state':
-        this.launchesList$ = this.filterService.getFilterMissions(
-          filterSelected.id
-        );
+        this.filterService.getFilterMissions(filterSelected.id);
         break;
       case 'type':
-        this.launchesList$ = this.filterService.getFilterLaunchers(
-          filterSelected.id
-        );
+        this.filterService.getFilterLaunchers(filterSelected.id);
         break;
     }
   }

@@ -56,7 +56,7 @@ export class GlobalStore {
         this.agencies$.next([...this.state.agencies]);
         break;
       case GlobalActionTypes.LoadTypes:
-        this.agencies$.next([...this.state.types]);
+        this.types$.next([...this.state.types]);
         break;
     }
   };

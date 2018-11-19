@@ -13,8 +13,11 @@ export function globalStoreReducer(
     case GlobalActionTypes.LoadStatuses:
       result.statuses = action.payload;
       break;
-    case GlobalActionTypes.LoadFavorites:
-      result.favorites = action.payload;
+    case GlobalActionTypes.LoadAgencies:
+      result.agencies = action.payload;
+      break;
+    case GlobalActionTypes.LoadTypes:
+      result.types = action.payload;
       break;
   }
   return result;
